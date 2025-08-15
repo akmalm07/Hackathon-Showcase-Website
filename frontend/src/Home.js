@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import './style/root.css';
 import logo from './logo.svg';
 import { Link } from 'react-router-dom';
@@ -17,19 +17,23 @@ export function NavBar()
             <li><Link to="/faq">FAQ</Link></li>
             <li><Link to="/ai">Chat with Bot</Link></li>
             </ul>
+          <div className="toggle-bars">☰</div>
         </div>
-        <div className="toggle-bars">☰</div>
     </header>
 
   )
 }
 
+//Global variables for the typing effect
 const wordList = ["Code", "Build", "Create"];
 const typingDelay = 100;
 const erasingDelay = 60;
 const newWordDelay = 1500;
 
-function HomeFront() {
+
+export function HomeFront() {
+
+//Typing effect logic
   const typedTextRef = useRef(null);
   const typingTimeout = useRef(null);
   const erasingTimeout = useRef(null);
@@ -38,30 +42,31 @@ function HomeFront() {
     let wordIndex = 0;
     let charIndex = 0;
 
-    function type() {
-      if (typedTextRef.current) {
-        if (charIndex < wordList[wordIndex].length) {
-          typedTextRef.current.textContent += wordList[wordIndex][charIndex];
-          charIndex++;
-          typingTimeout.current = setTimeout(type, typingDelay);
-        } else {
-          typingTimeout.current = setTimeout(erase, newWordDelay);
-        }
-      }
-    }
 
-    function erase() {
-      if (typedTextRef.current) {
-        if (charIndex > 0) {
-          typedTextRef.current.textContent = wordList[wordIndex].substring(0, charIndex - 1);
-          charIndex--;
-          erasingTimeout.current = setTimeout(erase, erasingDelay);
-        } else {
-          wordIndex = (wordIndex + 1) % wordList.length;
-          typingTimeout.current = setTimeout(type, typingDelay);
-        }
+    const type = () => {
+      if (!typedTextRef.current) return;
+
+      if (charIndex < wordList[wordIndex].length) {
+        typedTextRef.current.textContent += wordList[wordIndex][charIndex];
+        charIndex++;
+        typingTimeout.current = setTimeout(type, typingDelay);
+      } else {
+        typingTimeout.current = setTimeout(erase, newWordDelay);
       }
-    }
+    };
+
+    const erase = () => {
+      if (!typedTextRef.current) return;
+
+      if (charIndex > 0) {
+        typedTextRef.current.textContent = wordList[wordIndex].substring(0, charIndex - 1);
+        charIndex--;
+        erasingTimeout.current = setTimeout(erase, erasingDelay);
+      } else {
+        wordIndex = (wordIndex + 1) % wordList.length;
+        typingTimeout.current = setTimeout(type, typingDelay);
+      }
+    };
 
     typingTimeout.current = setTimeout(type, newWordDelay);
 
@@ -79,13 +84,13 @@ function HomeFront() {
       <div className="home-front-content">
         <h1>Welcome to the MBHS Hackathon!</h1>
         <p>
-          Are you ready to <span ref={typedTextRef} className="typed-text"></span>?
+          Are you ready to <span ref={typedTextRef} className="typed-text"></span>
+          <span className="blinking-underscore">_</span>?
         </p>
       </div>
     </section>
   );
 }
-
 export function Home() 
 {
   return (

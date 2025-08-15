@@ -3,8 +3,9 @@
   --nav-background-color: #282c34;
   --background-color: #282c34;
   --text-color: white;
-  --link-color: #61dafb;
-  --font-size: clamp(0.5rem, 2vw, 1.5rem);
+  --secondary-color: #61dafb;
+  --font-size: clamp(0.8rem, 2vw, 1.6rem);
+  --font-size-large: clamp(1.6rem, 3vw, 2.4rem);
 ;
 }
 
@@ -19,7 +20,8 @@ html, body {
 h1 
 {
   color: var(--text-color);
-  font-size: calc(var(--font-size) * 1.8);
+  font-size: var(--font-size-large);
+  font-weight: 600;
 }
 
 p {
@@ -30,22 +32,26 @@ p {
 .nav-bar
 {
   position: fixed;  
+  justify-content: center;
+  align-items: center;
   top: 0;           
   left: 0;
-  width: 100%;   background-color: var(--nav-background-color);
+  width: 100%;   
+  background-color: var(--nav-background-color);
   color: var(--text-color);
   font-size: var(--font-size);
   display: flex;
   z-index: 100;
+  height: clamp(55px, 10%, 100px);
 }
+
+
 
 .nav-bar .logo
 {
   height: 40px;
-  margin: 1rem;
+  padding: 0.6rem;
 }
-
-/*.nav-bar*/
 
 .nav-bar ul
 {
@@ -71,9 +77,16 @@ p {
 {
   color: var(--text-color);
   text-decoration: none;
+  transition: 0.2s color ease-in-out;
 }
 
-.toggle-bars
+.nav-bar ul li a:hover
+{
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+
+.nav-bar .toggle-bars
 {
   display: none;
   position: fixed;
@@ -122,14 +135,35 @@ p {
   color: var(--text-color);
 }
 
+.home-front-content .typed-text
+{
+  color: var(--secondary-color)
+}
+
+.home-front-content .blinking-underscore 
+{
+  color: var(--secondary-color);
+  display: inline-block;
+  animation: blink 0.8s step-start infinite;
+}
+
+@keyframes blink 
+{
+  50% {
+    opacity: 0;
+  }
+}
+
+
 @media (max-width: 800px) {
+  
   .nav-bar ul li 
   {
     display: none;
     /* Hide the toggle button */
   }
 
-  .toggle-bars
+  .nav-bar .toggle-bars
   {
     display: flex;
     color: var(--text-color);
@@ -137,15 +171,5 @@ p {
     font-size: 2rem;
     justify-content: center;
     padding: 1rem;
-  }
-
-  .home-front-content h1 
-  {
-    font-size: calc(var(--font-size) * 2.6);
-  }
-
-  .home-front-content p 
-  {
-    font-size: calc(var(--font-size) * 1.6);
   }
 }
