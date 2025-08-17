@@ -4,9 +4,9 @@
   --background-color: #282c34;
   --text-color: white;
   --secondary-color: #61dafb;
-  --font-size: clamp(0.8rem, 2vw, 1.6rem);
+  --font-size: clamp(0.8rem, 2vw, 1.4rem);
   --font-size-large: clamp(1.6rem, 3vw, 2.4rem);
-;
+
 }
 
 html, body {
@@ -77,6 +77,7 @@ p {
 {
   color: var(--text-color);
   text-decoration: none;
+  font-size: var(--font-size);
   transition: 0.2s color ease-in-out;
 }
 
@@ -86,13 +87,22 @@ p {
   text-decoration: none;
 }
 
-.nav-bar .toggle-bars
+.nav-bar #toggle-bars
 {
+  background-color: transparent;
+  border: none;
   display: none;
   position: fixed;
   z-index: 100;
   right: 0;
+  transition: transform 0.5s;
+} 
+
+.nav-bar #toggle-bars.spin
+{
+  transform: rotate(180deg);
 }
+
 
 .home-front
 {
@@ -110,7 +120,7 @@ p {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.6);
   z-index: 0;
 }
 
@@ -163,7 +173,7 @@ p {
     /* Hide the toggle button */
   }
 
-  .nav-bar .toggle-bars
+  .nav-bar #toggle-bars
   {
     display: flex;
     color: var(--text-color);

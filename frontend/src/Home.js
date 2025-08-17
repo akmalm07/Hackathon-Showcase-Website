@@ -1,28 +1,42 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import './style/root.css';
 import logo from './logo.svg';
 import { Link } from 'react-router-dom';
 import videoFile from './vendors/coding-vid.mp4';
 
-export function NavBar()
+
+export function NavBar() 
 {
+  const [flipped, setFlipped] = useState(false);
+
+  const toggleNavbar = () => {
+    setFlipped(!flipped);
+  };
+
   return (
     <header>
-        <div className="nav-bar">
-            <img className="logo" src={logo}/>
+      <div className="nav-bar">
+        <img className="logo" src={logo} alt="Logo" />
 
-            <ul>
-            <li><a href="#About-Sec">About</a></li>
-            <li><a target="_blank" href="TODO: Make google form">Join</a></li>
-            <li><Link to="/faq">FAQ</Link></li>
-            <li><Link to="/ai">Chat with Bot</Link></li>
-            </ul>
-          <div className="toggle-bars">☰</div>
-        </div>
+        <ul>
+          <li><a href="#About-Sec">About</a></li>
+          <li><a target="_blank" rel="noopener noreferrer" href="TODO: Make google form">Join</a></li>
+          <li><Link to="/faq">FAQ</Link></li>
+          <li><Link to="/ai">Chat with Bot</Link></li>
+        </ul>
+
+        <button
+          id="toggle-bars"
+          className={flipped ? "spin" : ""}
+          onClick={toggleNavbar}
+        >
+          ☰
+        </button>
+      </div>
     </header>
-
-  )
+  );
 }
+
 
 //Global variables for the typing effect
 const wordList = ["Code", "Build", "Create"];
@@ -76,13 +90,15 @@ export function HomeFront() {
     };
   }, []);
 
+
+
   return (
     <section className="home-front">
       <video autoPlay muted loop className="background-video">
         <source src={videoFile} type="video/mp4" />
       </video>
       <div className="home-front-content">
-        <h1>Welcome to the MBHS Hackathon!</h1>
+        <h1>Welcome to the <br></br> MBHS Hackathon!</h1>
         <p>
           Are you ready to <span ref={typedTextRef} className="typed-text"></span>
           <span className="blinking-underscore">_</span>?
