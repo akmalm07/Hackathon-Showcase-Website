@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from 'react-router-dom';
 import './style/root.css';
 import logo from './logo.svg';
-import { Link } from 'react-router-dom';
 import videoFile from './vendors/coding-vid.mp4';
 
 
-export function NavBar() 
+function NavBar() 
 {
   const [flipped, setFlipped] = useState(false);
 
@@ -19,7 +19,7 @@ export function NavBar()
         <img className="logo" src={logo} alt="Logo" />
 
         <ul>
-          <li><a href="#About-Sec">About</a></li>
+          <li><a href="About-Sec">About</a></li>
           <li><a target="_blank" rel="noopener noreferrer" href="TODO: Make google form">Join</a></li>
           <li><Link to="/faq">FAQ</Link></li>
           <li><Link to="/ai">Chat with Bot</Link></li>
@@ -45,7 +45,7 @@ const erasingDelay = 60;
 const newWordDelay = 1500;
 
 
-export function HomeFront() {
+function HomeFront() {
 
 //Typing effect logic
   const typedTextRef = useRef(null);
@@ -107,12 +107,14 @@ export function HomeFront() {
     </section>
   );
 }
-export function Home() 
+
+export default function Home() 
 {
   return (
   <>
   <NavBar/>
   <HomeFront/>
-  </>);
+  </>
+  );
 }
 
