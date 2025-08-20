@@ -7,14 +7,21 @@
   --font-size: clamp(0.8rem, 2vw, 1.4rem);
   --font-size-large: clamp(1.6rem, 3vw, 2.4rem);
 
+  --nav-background-color-scrolled: #4c5362;
+  --about-background-color: var(--nav-background-color);
 }
 
 html, body {
+  scroll-behavior: smooth;
   margin: 0;
   padding: 0;
   height: 100%;
   font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   color: var(--text-color);
+}
+
+section {
+  padding: 5vh 5vw;
 }
 
 h1 
@@ -43,9 +50,13 @@ p {
   display: flex;
   z-index: 100;
   height: clamp(55px, 10%, 100px);
+  transition: 0.3s background-color ease-in-out;
 }
 
-
+.nav-bar.scrolled
+{
+  background-color: var(--nav-background-color-scrolled);
+}
 
 .nav-bar .logo
 {
@@ -110,19 +121,29 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
 }
 
 .home-front::after
 {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: rgba(0, 0, 0, 0.6);
   z-index: 0;
 }
+
+/* ---If you perfer blur over opticity
+.home-front::after 
+{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Safari support for blur *-/
+}
+*/
 
 .home-front video
 {

@@ -13,13 +13,27 @@ function NavBar()
     setFlipped(!flipped);
   };
 
+  const [scrolled, setScrolled] = useState(true);
+
+  useEffect(() => 
+      {
+          const handleScroll = () =>
+          {
+              setScrolled(window.scrollY > 0);
+          };
+
+          window.addEventListener("scroll", handleScroll);
+
+          return () => window.removeEventListener("scroll", handleScroll);
+      }, []);
+
   return (
     <header>
-      <div className="nav-bar">
+      <div className={`nav-bar ${scrolled ? "scrolled" : ""}`}>
         <img className="logo" src={logo} alt="Logo" />
 
         <ul>
-          <li><a href="About-Sec">About</a></li>
+          <li><a href="#About-Sec">About</a></li>
           <li><a target="_blank" rel="noopener noreferrer" href="TODO: Make google form">Join</a></li>
           <li><Link to="/faq">FAQ</Link></li>
           <li><Link to="/ai">Chat with Bot</Link></li>
