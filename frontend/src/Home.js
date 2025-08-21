@@ -1,8 +1,36 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './style/root.css';
 import logo from './logo.svg';
 import videoFile from './vendors/coding-vid.mp4';
+
+
+function AboutLink({ setModal = () => {} }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    setModal(false);
+
+    if (location.pathname !== "/") {
+      // Navigate to home first
+      navigate("/", { state: { scrollTo: "About-Sec" } });
+    } else {
+      // Already on home, just scroll
+      const aboutSection = document.getElementById("About-Sec");
+      if (aboutSection) {
+        aboutSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
+  return (
+    <a href="#About-Sec" onClick={handleClick}>
+      About
+    </a>
+  );
+}
 
 
 function NavbarList({ setModal = () => {} }) {
@@ -10,7 +38,7 @@ function NavbarList({ setModal = () => {} }) {
   return (
   <>
     <ul>
-      <li><a onClick={() => setModal(false)} href="#About-Sec">About</a></li>
+      <li><AboutLink setModal={setModal} /></li>
       <li><a onClick={() => setModal(false)} target="_blank" rel="noopener noreferrer" href="TODO: Make google form">Join</a></li>
       <li><Link to="/faq" onClick={() => setModal(false)}>FAQ</Link></li>
       <li><Link to="/ai" onClick={() => setModal(false)}>Chat with Bot</Link></li>
@@ -20,7 +48,7 @@ function NavbarList({ setModal = () => {} }) {
 }
 
 
-function NavBar() {
+export function NavBar() {
   const [flipped, setFlipped] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -159,7 +187,7 @@ function HomeFront() {
   );
 }
 
-export default function Home() 
+export function Home() 
 {
   return (
   <>

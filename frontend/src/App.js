@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import FAQ from './FAQ';
-import Home from './Home';
+import { Home, NavBar } from './Home';
 import About from './About';
 import Footer from './Footer';
 
@@ -15,14 +15,15 @@ export default function App() {
           <>
            <Home />  
            <About />
-
+          {/* -- Add the Join Page Here --- */}
            <Footer />
-           
+
           </>
         } />
         <Route path="/faq" element=
         {
           <>
+           <NavBar />
            <FAQ />
           </>
         } />
@@ -30,6 +31,12 @@ export default function App() {
         {
           <>
            {/* AI Section to add */}
+          </>
+        } />
+        <Route path="/legal" element=
+        {
+          <>
+           {/* Legal Section to add */}
           </>
         } />
 

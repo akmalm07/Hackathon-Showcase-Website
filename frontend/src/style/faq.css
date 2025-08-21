@@ -1,0 +1,7 @@
+@import url("./root.css");
+
+.faq-section
+{
+  background-color: var(--faq-background-color);
+  height: 100vh;
+}
