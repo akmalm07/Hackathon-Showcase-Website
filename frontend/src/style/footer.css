@@ -23,7 +23,7 @@ footer a {
   font-size: var(--font-size);
   text-decoration: underline;
   color: var(--footer-text-color);
-
+  transition: 0.1s color ease-in-out;
 }
 
 footer ul li {
@@ -36,6 +36,7 @@ footer ul li a {
   transition: color 0.3s;
 }
 
-footer ul li a:hover {
+footer ul li a:hover,
+footer a:hover {
   color: var(--secondary-color);
 }

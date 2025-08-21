@@ -13,7 +13,12 @@
   --footer-text-color: var(--text-color);
   --nav-background-color-scrolled: #4c5362;
   --about-background-color: var(--nav-background-color);
-  --faq-background-color: var(--background-color);
+
+  --faq-background-color: #4d515b;
+  --faq-box-color: #3a3a3a ; /* unique box color */
+  --faq-box-color-hover: #6e6d6d; /* unique box color */
+
+  --navbar-height: clamp(55px, 10%, 100px);
 }
 
 /* --- ANIMATIONS --- */
@@ -124,6 +129,7 @@ p {
   font-size: var(--font-size-medium);
 }
 
+/* --- NavBar and Home Front Styles --- */
 .nav-bar
 {
   position: fixed;  
@@ -137,7 +143,7 @@ p {
   font-size: var(--font-size);
   display: flex;
   z-index: 100;
-  height: clamp(55px, 10%, 100px);
+  height: var(--navbar-height);
   transition: 0.3s background-color ease-in-out;
 }
 
