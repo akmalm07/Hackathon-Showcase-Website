@@ -5,51 +5,87 @@ import logo from './logo.svg';
 import videoFile from './vendors/coding-vid.mp4';
 
 
-function NavBar() 
-{
-  const [flipped, setFlipped] = useState(false);
+function NavbarList({ setModal = () => {} }) {
 
-  const toggleNavbar = () => {
-    setFlipped(!flipped);
+  return (
+  <>
+    <ul>
+      <li><a onClick={() => setModal(false)} href="#About-Sec">About</a></li>
+      <li><a onClick={() => setModal(false)} target="_blank" rel="noopener noreferrer" href="TODO: Make google form">Join</a></li>
+      <li><Link to="/faq" onClick={() => setModal(false)}>FAQ</Link></li>
+      <li><Link to="/ai" onClick={() => setModal(false)}>Chat with Bot</Link></li>
+    </ul>
+  </>
+  );
+}
+
+
+function NavBar() {
+  const [flipped, setFlipped] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDialogAnimating, setIsDialogAnimating] = useState(false);
+
+  // Scroll detection
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 0);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Toggle navbar and modal
+  const toggleNavBar = () => {
+    setFlipped((prev) => !prev);
+    if (!isDialogOpen) {
+      setIsDialogOpen(true);
+      // Start animation after mount
+      setTimeout(() => setIsDialogAnimating(true), 10);
+    } else {
+      closeModalAnimation();
+    }
   };
 
-  const [scrolled, setScrolled] = useState(true);
+  // Close modal with animation
+  const closeModalAnimation = () => {
+    setIsDialogAnimating(false); // start exit animation
+    setTimeout(() => setIsDialogOpen(false), 350); // unmount after animation
+  };
 
-  useEffect(() => 
-      {
-          const handleScroll = () =>
-          {
-              setScrolled(window.scrollY > 0);
-          };
-
-          window.addEventListener("scroll", handleScroll);
-
-          return () => window.removeEventListener("scroll", handleScroll);
-      }, []);
+  // Overlay click handler
+  const closeModal = (e) => {
+    if (e.target.classList.contains("modal-overlay")) {
+      toggleNavBar();
+    }
+  };
 
   return (
     <header>
       <div className={`nav-bar ${scrolled ? "scrolled" : ""}`}>
         <img className="logo" src={logo} alt="Logo" />
 
-        <ul>
-          <li><a href="#About-Sec">About</a></li>
-          <li><a target="_blank" rel="noopener noreferrer" href="TODO: Make google form">Join</a></li>
-          <li><Link to="/faq">FAQ</Link></li>
-          <li><Link to="/ai">Chat with Bot</Link></li>
-        </ul>
+        <NavbarList />
 
         <button
           id="toggle-bars"
           className={flipped ? "spin" : ""}
-          onClick={toggleNavbar}
+          onClick={toggleNavBar}
         >
           ☰
         </button>
       </div>
+
+      {isDialogOpen && (
+        <div className={`modal-overlay ${isDialogAnimating ? "active" : ""}`} onClick={closeModal}>
+          <div className={`modal ${isDialogAnimating ? "fly-out-in" : ""}`}>
+            <h2>Dashboard</h2>
+            <NavbarList setModal={setIsDialogAnimating} />
+          </div>
+        </div>
+      )}
     </header>
   );
 }
+
 
 
 //Global variables for the typing effect
@@ -61,7 +97,7 @@ const newWordDelay = 1500;
 
 function HomeFront() {
 
-//Typing effect logic
+// --Typing effect logic
   const typedTextRef = useRef(null);
   const typingTimeout = useRef(null);
   const erasingTimeout = useRef(null);
@@ -103,7 +139,7 @@ function HomeFront() {
       clearTimeout(erasingTimeout.current);
     };
   }, []);
-
+  // --Typing effect logic end
 
 
   return (

@@ -1,5 +1,3 @@
-//import { useEffect, useRef, useState } from "react";
-//import { Link } from 'react-router-dom';
 import "./style/about.css"
 import "./style/seporator.css"
 
@@ -32,25 +30,19 @@ function AboutSection()
                 <Separator 
                     title="About Us" 
                     text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                        nisi ut aliquip ex ea commodo consequat." 
+                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
                     Icon={Info} 
                 />
                 <Separator 
                     title="Our Mission" 
                     text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                        nisi ut aliquip ex ea commodo consequat." 
+                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                     Icon={Star} 
                 />
                 <Separator 
                     title="Join Us" 
                     text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                        nisi ut aliquip ex ea commodo consequat." 
+                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
                         Icon={Heart} 
                 />
             </div>

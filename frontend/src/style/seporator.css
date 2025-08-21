@@ -3,12 +3,12 @@
   gap: clamp(20px, 10vw, 60px);
   justify-content: center;
   flex-wrap: wrap;
-  padding: 0 10px;
+  padding: 10px 10px 30px 10px;
 }
 
 .separator {
   text-align: center;
-  margin: 40px 0;
+  margin: 20px 0 40px;
   padding: 20px;
   flex: 1 1 250px;
   min-width: 200px;
@@ -31,13 +31,13 @@
 }
 
 .separator-title {
-  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
   font-weight: 600;
   margin: 16px 0;
 }
 
 .separator-text {
-  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  font-size: clamp(1rem, 1.5vw, 1.4rem);
   color: var(--text-color, #555);
   margin: 8px 0;
 }

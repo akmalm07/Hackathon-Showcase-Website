@@ -7,10 +7,40 @@
   --secondary-color-darker: #599caf;
   --font-size: clamp(1rem, 1.6vw, 1.5rem); /* p tag */
   --font-size-large: clamp(1.8rem, 3.5vw, 2.5rem);  /* h1 tag */
+  --font-size-medium: clamp(1.4rem, 2.5vw, 1.8rem);  /* h2 tag */
 
+  --footer-background-color: #3b3939;
+  --footer-text-color: var(--text-color);
   --nav-background-color-scrolled: #4c5362;
   --about-background-color: var(--nav-background-color);
 }
+
+/* --- ANIMATIONS --- */
+
+/* -- Flying animation for home-front-content
+@keyframes flyIn {
+  from {
+    transform: translateY(-200px); 
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0); 
+    opacity: 1;
+  }
+}
+*/
+
+
+
+@keyframes blink 
+{
+  50% {
+    opacity: 0;
+  }
+}
+
+
+/* --- Global Configs --- */
 
 html, body {
   scroll-behavior: smooth;
@@ -21,6 +51,12 @@ html, body {
   color: var(--text-color);
 }
 
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 section 
 {
   padding: 5vh 5vw;
@@ -28,6 +64,7 @@ section
 
 a
 {
+  color: var(--text-color);
   text-decoration: none;
 }
 
@@ -42,6 +79,48 @@ h1
 p {
   margin: 1rem 0;
   font-size: var(--font-size);
+}
+
+
+/* --- Modal Styles --- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: backdrop-filter 0.3s ease-in-out;
+}
+
+.modal-overlay.active {
+  backdrop-filter: blur(8px);
+}
+
+.modal {
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  gap: 10px;
+  font-size: var(--font-size);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+
+  /* Flying effect only */
+  transform: translateY(-200%);
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fly-out-in {
+  transform: translateY(0);
+}
+
+
+.modal h2 {
+  margin: 2rem;
+  font-size: var(--font-size-medium);
 }
 
 .nav-bar
@@ -74,9 +153,6 @@ p {
 
 .nav-bar ul
 {
-  list-style: none;
-  padding: 0;
-  margin: 0;
   display: flex;
   text-decoration: none;
   margin-left: auto;
@@ -85,14 +161,16 @@ p {
 
 }
 
-.nav-bar ul li
+.nav-bar ul li,
+.modal ul li
 {
   margin: 1rem 2rem;
   display: flex;
   align-items: center;
 }
 
-.nav-bar ul li a
+.nav-bar ul li a,
+.modal ul li a
 {
   color: var(--text-color);
   text-decoration: none;
@@ -100,7 +178,8 @@ p {
   transition: 0.2s color ease-in-out;
 }
 
-.nav-bar ul li a:hover
+.nav-bar ul li a:hover,
+.modal ul li a:hover
 {
   color: var(--secondary-color);
   text-decoration: none;
@@ -116,6 +195,7 @@ p {
   right: 0;
   transition: transform 0.5s;
 } 
+
 
 .nav-bar #toggle-bars.spin
 {
@@ -172,6 +252,7 @@ p {
   padding: 3rem;
   text-align: center;
   color: var(--text-color);
+  /*animation: 0.5s flyIn ease-in-out;   -- Would you like a flyig animation ?*/
 }
 
 .home-front-content .typed-text
@@ -201,13 +282,6 @@ p {
 .home-front-content .join-button:hover
 {
   background-color: var(--secondary-color-darker);
-}
-
-@keyframes blink 
-{
-  50% {
-    opacity: 0;
-  }
 }
 
 

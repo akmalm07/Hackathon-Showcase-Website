@@ -1,0 +1,41 @@
+@import url("./root.css");
+
+footer {
+  background-color: var(--footer-background-color);
+  color: var(--footer-text-color);
+  text-align: center;
+  padding: 2rem;
+  position: relative;
+  height: auto;
+  bottom: 0;
+}
+
+footer ul { 
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+footer a {
+  color: var(--footer-text-color);
+  text-decoration: none;
+  font-size: var(--font-size);
+  text-decoration: underline;
+  color: var(--footer-text-color);
+
+}
+
+footer ul li {
+  margin: 0 1rem;
+}
+
+footer ul li a {
+  color: var(--footer-text-color);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+footer ul li a:hover {
+  color: var(--secondary-color);
+}
