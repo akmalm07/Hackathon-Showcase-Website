@@ -117,6 +117,7 @@ function HomeFront() {
           Are you ready to <span ref={typedTextRef} className="typed-text"></span>
           <span className="blinking-underscore">_</span>?
         </p>
+        <a href="TODO" className="join-button">Join Now!</a>
       </div>
     </section>
   );

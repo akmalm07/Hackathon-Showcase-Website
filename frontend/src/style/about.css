@@ -3,6 +3,8 @@
 #About-Sec
 {
     background: var(--about-background-color);
+    min-height: 80vh;
+    height: auto; 
 }
 
 h2 

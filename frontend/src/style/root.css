@@ -4,8 +4,9 @@
   --background-color: #282c34;
   --text-color: white;
   --secondary-color: #61dafb;
-  --font-size: clamp(0.8rem, 2vw, 1.4rem);
-  --font-size-large: clamp(1.6rem, 3vw, 2.4rem);
+  --secondary-color-darker: #599caf;
+  --font-size: clamp(1rem, 1.6vw, 1.5rem); /* p tag */
+  --font-size-large: clamp(1.8rem, 3.5vw, 2.5rem);  /* h1 tag */
 
   --nav-background-color-scrolled: #4c5362;
   --about-background-color: var(--nav-background-color);
@@ -20,9 +21,16 @@ html, body {
   color: var(--text-color);
 }
 
-section {
+section 
+{
   padding: 5vh 5vw;
 }
+
+a
+{
+  text-decoration: none;
+}
+
 
 h1 
 {
@@ -88,7 +96,7 @@ p {
 {
   color: var(--text-color);
   text-decoration: none;
-  font-size: var(--font-size);
+  font-size: clamp(1.2rem, 2vw, 1.4rem);
   transition: 0.2s color ease-in-out;
 }
 
@@ -161,14 +169,14 @@ p {
 {
   position: relative;
   z-index: 2;
-  padding: 2rem;
+  padding: 3rem;
   text-align: center;
   color: var(--text-color);
 }
 
 .home-front-content .typed-text
 {
-  color: var(--secondary-color)
+  color: var(--secondary-color);
 }
 
 .home-front-content .blinking-underscore 
@@ -176,6 +184,23 @@ p {
   color: var(--secondary-color);
   display: inline-block;
   animation: blink 0.8s step-start infinite;
+}
+
+.home-front-content .join-button
+{
+  display: inline-block; 
+  border-radius: 60px;
+  background-color: var(--secondary-color);
+  padding: 0.6rem 2rem;
+  margin: 1rem 0;
+  color: var(--primary-color);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  transition: 0.3s background-color ease-in-out;
+}
+
+.home-front-content .join-button:hover
+{
+  background-color: var(--secondary-color-darker);
 }
 
 @keyframes blink 

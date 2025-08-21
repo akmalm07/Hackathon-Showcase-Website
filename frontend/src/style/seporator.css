@@ -10,8 +10,9 @@
   text-align: center;
   margin: 40px 0;
   padding: 20px;
-  flex: 0 0 250px; 
-  max-width: 250px;
+  flex: 1 1 250px;
+  min-width: 200px;
+  max-width: 300px;
   box-sizing: border-box;
 }
 
@@ -24,8 +25,8 @@
 }
 
 .separator-icon {
-  width: clamp(24px, 5vw, 32px);
-  height: clamp(24px, 5vw, 32px);
+  width: clamp(36px, 5vw, 32px);
+  height: clamp(36px, 5vw, 32px);
   color: var(--secondary-color, #4caf50);
 }
 
