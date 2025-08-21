@@ -68,7 +68,7 @@ export default function FAQ() {
 
   return (
     <section className="faq-section">
-      <h2 className="faq-title">Frequently Asked Questions</h2>
+      <h2>Frequently Asked Questions</h2>
       {faqData.map((faq, index) => (
         <div key={index} className={`faq-item ${openIndex === index ? "open" : ""}`}>
           <button className="faq-question" onClick={() => toggleFAQ(index)}>

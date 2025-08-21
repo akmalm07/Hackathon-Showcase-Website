@@ -10,9 +10,6 @@
 
 .faq-section h2 {
   margin-top: var(--navbar-height);
-  font-size: var(--font-size-medium);
-  text-align: center;
-  color: var(--text-color);
 }
 
 /* FAQ item as a card */
