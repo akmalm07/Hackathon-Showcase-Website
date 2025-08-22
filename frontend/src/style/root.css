@@ -66,6 +66,10 @@ ul {
 section 
 {
   padding: 5vh 5vw;
+  height: 100%; 
+  min-height: 100vh;
+  border: 0;
+  margin: 0;
 }
 
 a
@@ -210,13 +214,24 @@ p {
 }
 
 
-.home-front
-{
+.home-front {
+
+  position: relative;
+  width: 100%;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  background-image: url("../vendors/home-bg-example.jpg");
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat;
+  z-index: -1;
+
   padding: 0;
+  margin: 0; 
+  border: 0;
 }
 
 .home-front::after
@@ -240,17 +255,16 @@ p {
 }
 */
 
-.home-front video
+/* .home-front video
 {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
   object-fit: cover;
   z-index: -1;
-  opacity: 0.7;
-}
+  opacity: 0.6; /* --Darkness-- *-/
+} 
+*/
 
 .home-front-content
 {
@@ -293,8 +307,8 @@ p {
 
 
 @media (max-width: 800px) {
-  
-  .nav-bar ul li 
+
+  .nav-bar ul li
   {
     display: none;
     /* Hide the toggle button */

@@ -6,7 +6,7 @@ export default function FAQ() {
   const faqRefs = useRef([]); // refs to each answer wrapper
 
   const faqData = [
-    { question: "Question 1", answer: "Answer to question 1." },
+    { question: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", answer: "Answer to question 1.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
     { question: "Question 2", answer: "Answer to question 2." },
     { question: "Question 3", answer: "Answer to question 3." },
     { question: "Question 1", answer: "Answer to question 1." },
@@ -70,8 +70,8 @@ export default function FAQ() {
     <section className="faq-section">
       <h2>Frequently Asked Questions</h2>
       {faqData.map((faq, index) => (
-        <div key={index} className={`faq-item ${openIndex === index ? "open" : ""}`}>
-          <button className="faq-question" onClick={() => toggleFAQ(index)}>
+        <div key={index} className={`faq-item ${openIndex === index ? "open" : ""}`} onClick={() => toggleFAQ(index)}>
+          <button className="faq-question">
             <span>{faq.question}</span>
             <span className="arrow">▼</span>
           </button>

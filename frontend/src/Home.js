@@ -172,9 +172,6 @@ function HomeFront() {
 
   return (
     <section className="home-front">
-      <video autoPlay muted loop className="background-video">
-        <source src={videoFile} type="video/mp4" />
-      </video>
       <div className="home-front-content">
         <h1>Welcome to the <br></br> MBHS Hackathon!</h1>
         <p>
