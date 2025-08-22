@@ -1,0 +1,206 @@
+@import url("./root.css");
+
+
+.nav-bar
+{
+  position: fixed;  
+  justify-content: center;
+  align-items: center;
+  top: 0;           
+  left: 0;
+  width: 100%;   
+  background-color: var(--nav-background-color);
+  color: var(--text-color);
+  font-size: var(--font-size);
+  display: flex;
+  z-index: 100;
+  height: var(--navbar-height);
+  transition: 0.3s background-color ease-in-out;
+}
+
+.nav-bar.scrolled
+{
+  background-color: var(--nav-background-color-scrolled);
+}
+
+.nav-bar .logo
+{
+  height: 40px;
+  padding: 0.6rem;
+}
+
+.nav-bar ul
+{
+  display: flex;
+  text-decoration: none;
+  margin-left: auto;
+  justify-content: space-between;
+}
+
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: backdrop-filter 0.3s ease-in-out;
+}
+
+.modal-overlay.active {
+  backdrop-filter: blur(8px);
+}
+
+.modal {
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  gap: 10px;
+  font-size: var(--font-size);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+
+  /* Flying effect only */
+  transform: translateY(-200%);
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fly-out-in {
+  transform: translateY(0);
+}
+
+
+.modal h2 {
+  margin: 2rem;
+  font-size: var(--font-size-medium);
+}
+
+
+.nav-bar ul li,
+.modal ul li
+{
+  margin: 1rem 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.nav-bar ul li a,
+.modal ul li a
+{
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: clamp(1.2rem, 2vw, 1.4rem);
+  transition: 0.2s color ease-in-out;
+}
+
+.nav-bar ul li a:hover,
+.modal ul li a:hover
+{
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+
+.nav-bar #toggle-bars
+{
+  background-color: transparent;
+  border: none;
+  display: none;
+  position: fixed;
+  z-index: 100;
+  right: 0;
+  transition: transform 0.5s;
+} 
+
+
+.nav-bar #toggle-bars.spin
+{
+  transform: rotate(180deg);
+}
+
+
+
+/* --- Chat Button Styles --- */
+
+.chat-wrapper {
+  position: fixed;
+  bottom: 95px;
+  right: 24px;
+  z-index: 1000;
+}
+
+.chat-bubble {
+  background: #0078ff;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  position: relative;
+  z-index: 2; /* above the tail */
+  opacity: 0;
+  animation: fadeIn 0.6s ease-in forwards;
+  transition: transform 0.3s;
+}
+
+.chat-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -9px;
+  right: 20px;   
+  width: 0;
+  height: 0;
+  border-width: 10px 10px 0 10px;
+  border-style: solid;
+  border-color: #0078ff transparent transparent transparent;
+  z-index: 1;
+  pointer-events: none; 
+}
+
+.chat-bubble:hover {
+  transform: translateY(-6px);
+}
+
+.chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--background-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.chat-button:hover {
+  background-color: var(--secondary-color);
+}
+
+@media (max-width: 800px) {
+
+  .nav-bar ul li
+  {
+    display: none;
+    /* Hide the toggle button */
+  }
+
+  .nav-bar #toggle-bars
+  {
+    display: flex;
+    color: var(--text-color);
+    align-items: center;
+    font-size: 2rem;
+    justify-content: center;
+    padding: 1rem;
+  }
+}

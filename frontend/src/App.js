@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import FAQ from './FAQ';
-import { Home, NavBar } from './Home';
+import Home from './Home';
+import { NavBar, ChatButton } from './NavBar';
 import About from './About';
+import ChatPage from './Chat';
 import Footer from './Footer';
 
 
@@ -13,8 +15,10 @@ export default function App() {
         <Route path="/" element=
         { 
           <>
-           <Home />  
-           <About />
+            <NavBar />
+            <ChatButton />
+            <Home />  
+            <About />
           {/* -- Add the Join Page Here --- */}
            <Footer />
 
@@ -23,20 +27,23 @@ export default function App() {
         <Route path="/faq" element=
         {
           <>
-           <NavBar />
-           <FAQ />
+            <NavBar />
+            <ChatButton />
+            <FAQ />
           </>
         } />
         <Route path="/ai" element=
         {
           <>
-           {/* AI Section to add */}
+            <NavBar />
+            <ChatPage />
           </>
         } />
         <Route path="/legal" element=
         {
           <>
-           {/* Legal Section to add */}
+            <NavBar />
+            {/* Legal Section to add */}
           </>
         } />
 
