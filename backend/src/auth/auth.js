@@ -1,7 +1,4 @@
-const dotenv = require('dotenv');
-const path = require('path');
-
-dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+const files = require('../config/files');
 
 const authConfig = {
     username: process.env.AUTH_USERNAME,
