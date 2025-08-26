@@ -1,12 +1,11 @@
-const files = require('./files')
-const { Configuration, OpenAIApi } = require('openai');
+const OpenAI = require("openai");
 
-const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY
 });
-
+    
 module.exports = {
-    openai: new OpenAIApi(configuration),
+    openai: openai,
     maxChatSize: process.env.MAX_CHAT_SIZE || 30,
-    timeToDeleteConvSeconds: process.env.TIME_TO_DELETE_CONVERSATION_SECONDS || 3600
+    timeToDeleteConversationSeconds: process.env.TIME_TO_DELETE_CONVERSATION_SECONDS || 3600
 };

@@ -13,7 +13,7 @@ const serviceAccountCredentials = JSON.parse(
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccountCredentials),
-  storageBucket: process.env.GCLOUD_STORAGE_BUCKET,
+  storageBucket: process.env.CLOUD_STORAGE_BUCKET,
 });
 
 module.exports.firestore = admin.firestore();
@@ -26,7 +26,6 @@ module.exports.uploadPath = 'uploads/';
 
 module.exports.apiRoutes = {
   faq: '/api/faq',
-  promptEngineering: '/api/prompt-engineering',
   chat: '/api/chat',
 };
 

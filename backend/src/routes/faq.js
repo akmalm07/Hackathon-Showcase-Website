@@ -1,8 +1,7 @@
 const { apiRoutes } = require('../config/gcloud');
 const express = require('express');
 const auth = require('../auth/auth');
-const path = require('path');
-const fs = require('fs');
+const { path, fs } = require('../config/files');
 
 const router = express.Router();
 

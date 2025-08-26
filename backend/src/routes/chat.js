@@ -1,18 +1,18 @@
-const files = require('../config/files');
+const { backendUrl, fs, path } = require('../config/files');
 const express = require('express');
 const { apiRoutes, collections, firestoreTimestamp } = require('../config/gcloud');
 const { getClosestWordIndex } = require('../config/spellingFixer');
-const { openai } =  require('../config/gpt');
+const { openai, timeToDeleteConversationSeconds, maxChatSize } =  require('../config/gpt');
 
 const router = express.Router()
 
 
 async function checkIfNotExceedLimits(res, chatId, message, chatHistory) {
     
-    if (chatHistory.size() <= openai.maxChatSize) {
+    if (chatHistory.size() <= maxChatSize) {
         chatHistory.push({ user: message, assistant: null });
     } else {
-        const result = await fetch(`${files.backendUrl}/chat`, {
+        const result = await fetch(`${backendUrl}/chat`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ chatId: chatId }),
@@ -86,7 +86,7 @@ async function getAppropriateContext(res, message) {
     const contextList = [];
 
     try {
-        contextList.push(files.fs.readFileSync(files.path.join(__dirname, '../../docs/promptStarter.txt'), 'utf8'));
+        contextList.push(fs.readFileSync(path.join(__dirname, '../../docs/promptStarter.txt'), 'utf8'));
     } catch (error) {
         console.error('Error reading prompt starter file:', error);
         res.status(500).json({ error: 'Error reading prompt starter file:', details: error });
@@ -116,7 +116,7 @@ router.post(apiRoutes.chat, async (req, res) => {
         try {
             docRef = await collections.chatHistory.add({
                 createdAt: firestoreTimestamp.fromDate( new Date()),
-                expiresAt: firestoreTimestamp.fromDate(new Date(Date.now() + openai.timeToDeleteConversationSeconds * 1000)),
+                expiresAt: firestoreTimestamp.fromDate(new Date(Date.now() + timeToDeleteConversationSeconds * 1000)),
                 messages: []
             });
         } catch (error) {
