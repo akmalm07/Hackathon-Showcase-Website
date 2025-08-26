@@ -64,26 +64,24 @@ export function NavBar() {
 
   // Toggle navbar and modal
   const toggleNavBar = () => {
+    setTimeout(() => setIsDialogAnimating(true), 10);
     setFlipped((prev) => !prev);
+    
     if (!isDialogOpen) {
       setIsDialogOpen(true);
-      // Start animation after mount
-      setTimeout(() => setIsDialogAnimating(true), 10);
-    } else {
-      closeModalAnimation();
     }
   };
 
   // Close modal with animation
   const closeModalAnimation = () => {
     setIsDialogAnimating(false); // start exit animation
-    setTimeout(() => setIsDialogOpen(false), 350); // unmount after animation
+    setTimeout(() => setIsDialogOpen(false), 350);
   };
 
   // Overlay click handler
   const closeModal = (e) => {
     if (e.target.classList.contains("modal-overlay")) {
-      toggleNavBar();
+      closeModalAnimation();
     }
   };
 
@@ -122,13 +120,13 @@ export function ChatButton() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setAppear(true);
-    }, 1000);
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <Link to="/chat" className="chat-button">
+    <Link to="/ai" className="chat-button">
       {appear && (
         <div class="chat-wrapper">
         <div class="chat-bubble">Hey, chat with me!</div>

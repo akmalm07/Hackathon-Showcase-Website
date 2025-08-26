@@ -4,7 +4,7 @@
   --background-color: #282c34;
   --text-color: white;
   --secondary-color: #61dafb;
-  --secondary-color-darker: #599caf;
+  --secondary-color-darker: #37788a;
   --font-size: clamp(1rem, 1.6vw, 1.5rem); /* p tag */
   --font-size-large: clamp(1.8rem, 3.5vw, 2.5rem);  /* h1 tag */
   --font-size-medium: clamp(1.4rem, 2.5vw, 1.8rem);  /* h2 tag */
@@ -12,6 +12,7 @@
   --footer-background-color: #3b3939;
   --footer-text-color: var(--text-color);
   --nav-background-color-scrolled: #4c5362;
+  --nav-background-color-darker: #3a3b3f;
   --about-background-color: var(--nav-background-color);
 
   --faq-background-color: #4d515b;
@@ -82,6 +83,7 @@ a
 {
   color: var(--text-color);
   text-decoration: none;
+  cursor: pointer;
 }
 
 

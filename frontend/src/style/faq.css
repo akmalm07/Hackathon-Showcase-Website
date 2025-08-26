@@ -9,7 +9,7 @@
 }
 
 .faq-section h2 {
-  margin-top: var(--navbar-height);
+  margin-top: calc(var(--navbar-height) + 1rem);
 }
 
 /* FAQ item as a card */
@@ -58,6 +58,7 @@
 /* Arrow */
 .faq-question .arrow {
   font-size: var(--font-size);
+  transition: transform 0.3s ease;
 }
 .faq-item.open .arrow {
   transform: rotate(180deg);
