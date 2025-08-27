@@ -5,11 +5,22 @@ const { path, fs } = require('../config/files');
 const router = express.Router();
 
 async function getFAQData() {
-    const faqPath = path.join(__dirname, '../../docs/faq.json');
-    const faqContent = await fs.readFile(faqPath, 'utf8');
-    return JSON.parse(faqContent);
+    try {
+        const faqPath = path.join(__dirname, '../../docs/faq.json');
+        const faqContent = await fs.promises.readFile(faqPath, 'utf8');
+        return JSON.parse(faqContent);
+    } catch (error) {
+        console.error('Error fetching FAQ data:', error);
+        return [];
+    }
 }
 
+async function saveFAQData(faqData) {
+    const faqPath = path.join(__dirname, '../../docs/faq.json');
+    await fs.promises.writeFile(faqPath, JSON.stringify(faqData, null, 2));
+}
+
+// TODO: Unit Test
 async function saveFAQData(faqData) {
     const faqPath = path.join(__dirname, '../../docs/faq.json');
     await fs.writeFile(faqPath, JSON.stringify(faqData, null, 2));

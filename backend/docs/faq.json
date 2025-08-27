@@ -2,6 +2,18 @@
     {
         "question" : "What is a Hackathon?",
         "answer" : "A Hackathon is an event where individuals come together to collaborate on software projects, typically over a short period of time."
+    },
+    {
+        "question" : "How do I register for the Hackathon?",
+        "answer" : "You can register for the Hackathon by visiting our registration page and filling out the required information."
+    },
+    {
+        "question" : "What should I bring to the Hackathon?",
+        "answer" : "Participants are encouraged to bring their own laptops, chargers, and any other materials they may need for coding and collaboration."
+    },
+    {
+        "question" : "Are there any prizes for winning teams?",
+        "answer" : "Yes, we offer various prizes for winning teams, including tech gadgets, gift cards, and opportunities for mentorship."
     }
 
 ]

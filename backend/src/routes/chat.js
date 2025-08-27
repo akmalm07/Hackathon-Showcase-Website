@@ -1,59 +1,97 @@
 const { backendUrl, fs, path } = require('../config/files');
 const express = require('express');
-const { collections, firestoreTimestamp } = require('../config/gcloud');
+const { collections, firestoreTimestamp, firestoreAddValue } = require('../config/gcloud');
 const { getClosestWordIndex } = require('../config/spellingFixer');
 const { openai, timeToDeleteConversationSeconds, maxChatSize } =  require('../config/gpt');
 
 const router = express.Router()
 
-async function checkIfNotExceedLimits(res, chatId, message, chatHistory) {
-
+async function checkIfNotExceedLimits(res, chatId, chatHistory = []) {
+    
     if (chatHistory.length <= maxChatSize) {
-        chatHistory.push({ user: message, assistant: null });
-    } else {
-        const result = await fetch(`${backendUrl}/chat`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chatId: chatId }),
-        });
-
-        const data = await result.json();
-
-        if (data.error === 'Chat history not found' && data.status === 404) {
-            console.error('Error deleting chat history:', data.error || 'Unknown error');
-            res.status(404).json({ error: 'Chat history not found' });
-        }
-
-        if (!result.ok) {
-            console.error('Error deleting chat history:', data.error || 'Unknown error');
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
-
-        res.status(400).json({ error: 'Chat history exceeded maximum size and has been reset. Please refresh your screen.' });        
+        return true;
     }
-}
 
-async function sendMessageToChatGPT(res, chatId, message, contextList, chatHistory) {
-
-    let contextStr = '';
-    contextList.forEach(context => {
-        contextStr += context + '\n';
-    } );
-    await checkIfNotExceedLimits(res, chatId, message, chatHistory);
-
-    const response = await openai.chat.completions.create({
-        model: 'gpt-4',
-        messages: [
-            { role: 'system', content: contextStr },
-            ...chatHistory.flatMap(entry => [ 
-                { role: 'user', content: entry.user }, 
-                { role: 'assistant', content: entry.assistant }
-            ]),
-            { role: 'user', content: message }
-        ]
+    const result = await fetch(`${backendUrl}/chat`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chatId: chatId }),
     });
 
-    return response.choices[0].message.content;
+    const data = await result.json();
+
+    if (data.error === 'Chat history not found' && data.status === 404) {
+        console.error('Error deleting chat history:', data.error || 'Unknown error');
+        throw new Error('Chat history not found');
+    }
+
+    if (!result.ok) {
+        console.error('Error deleting chat history:', data.error || 'Unknown error');
+        throw new Error('Failed to delete chat history');
+    }
+
+    return false;
+
+}
+
+async function sendMessageToChatGPT(res, chatId, message = "", contextList = [], chatHistory = []) {
+
+    let response;
+
+    try {
+        // Build system context
+        const contextStr = (contextList.length > 0 ? contextList.join("\n") : null);
+
+        console.log('\n\nContext List:', contextList, '\n\n');
+        console.log('\n\nChat history length:', chatHistory.length, '\n\n');
+
+        // Validate inputs before hitting the API
+        try {
+            const validation = await checkIfNotExceedLimits(res, chatId, chatHistory);
+
+            if (!validation) {
+                return res.status(400).json({ error: 'Chat history exceeded maximum size and has been reset. Please refresh your screen.' });
+            }
+
+        } catch (error) {
+            console.error('Error validating chat history:', error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        // Build messages array
+        const messages = [];
+
+        if (contextStr) {
+            messages.push({ role: "system", content: contextStr });
+        }
+
+        if (Array.isArray(chatHistory) && chatHistory.length > 0) {
+            chatHistory.forEach(entry => {
+                if (entry.user) {
+                    
+                    messages.push({ role: "user", content: entry.user });
+                }
+                if (entry.assistant) {
+                    messages.push({ role: "assistant", content: entry.assistant });
+                }
+            });
+        }
+
+        messages.push({ role: "user", content: message  });
+
+        // Call OpenAI
+        console.log('\n\nSending message to OpenAI:', messages, '\n\n');
+        response = await openai.chat.completions.create({
+            model: "gpt-4",
+            messages
+        });
+
+    } catch (err) {
+        console.error("Error in sendMessageToChatGPT:", err);
+        res.status(500).json({ error: 'Internal Server Error', details: err });
+        return;
+    }
+    return response.choices[0]?.message?.content ?? "";
 }
 
 async function getAppropriateContext(res, message) {
@@ -76,7 +114,7 @@ async function getAppropriateContext(res, message) {
         contexts: [ ]
     }
 
-    dbRef.docs.map((doc, i) => {
+    dbRef.docs.forEach((doc, i) => {
         const keyWords = doc.keyWords || [];
         const context = doc.context || '';
         keyWords.forEach(word => {
@@ -105,18 +143,29 @@ async function getAppropriateContext(res, message) {
     return contextList;
 }
 
-router.use('/chat', express.json());
+router.use('/', express.json());
 
 
-router.post('/chat', async (req, res) => { // DEBUGGING
+router.post('/', async (req, res) => { 
 
     const message = req.body.message;
+    
+    if (!message || message.trim() === "") {
+        return res.status(400).json({ error: 'Message is required' });
+    }
+
     let chatId = req.body.chatId;
 
+    console.log('\n\nReceived message:', message, '\n\n');
+    console.log('\n\nReceived ID:', chatId, '\n\n');
+
+    let response = "";
+    let doc;
+
     if (!chatId) {
-        let docRef;
         try {
-            docRef = await collections.chatHistory.add({
+            doc = collections.chatHistory.doc();
+            await doc.set({
                 createdAt: firestoreTimestamp.fromDate( new Date()),
                 expiresAt: firestoreTimestamp.fromDate(new Date(Date.now() + timeToDeleteConversationSeconds * 1000)),
                 messages: []
@@ -128,30 +177,39 @@ router.post('/chat', async (req, res) => { // DEBUGGING
 
         const contextList = await getAppropriateContext(res, message);
 
-        chatId = docRef.id;
+        chatId = doc.id;
 
-        const response = await sendMessageToChatGPT(res, chatId, message, contextList, []);
+        response = await sendMessageToChatGPT(res, chatId, message, contextList, []);
+    } else {
 
-        res.status(200).json({ reply: response, chatId: chatId });
-        return;
+        let docRef;
+        try {
+            doc = collections.chatHistory.doc(chatId);
+            docRef = await doc.get();
+        } catch (error) {
+            console.error('Error fetching chat history:', error);
+            return res.status(500).json({ error: 'Error fetching chat history' });
+        }
+
+        if (!docRef.exists) {
+            return res.status(400).json({ error: 'Your chat history has been expired. Please start a new conversation.' });
+        }
+
+        const chatHistory = docRef.data().messages || [];
+        const contextList = await getAppropriateContext(res, message);
+
+        response = await sendMessageToChatGPT(res, chatId, message, contextList, chatHistory);
+
     }
-
-    let docRef;
+    
     try {
-        docRef = await collections.chatHistory.doc(chatId).get();
+        await doc.update({
+            messages: firestoreAddValue.arrayUnion({ user: message, assistant: response })
+        });
     } catch (error) {
-        console.error('Error fetching chat history:', error);
-        return res.status(500).json({ error: 'Error fetching chat history' });
+        console.error('Error updating chat history:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
-
-    if (!docRef.exists) {
-        return res.status(400).json({ error: 'Your chat history has been expired. Please start a new conversation.' });
-    }
-
-    const chatHistory = docRef.data().messages || [];
-    const contextList = await getAppropriateContext(res, message);
-
-    const response = await sendMessageToChatGPT(res, chatId, message, contextList, chatHistory);
 
     res.status(200).json({ reply: response, chatId: chatId });
 });

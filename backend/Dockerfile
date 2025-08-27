@@ -8,6 +8,7 @@ RUN npm install --production
 
 COPY . .
 
-EXPOSE 3000
+# Changed to match .env PORT
+EXPOSE 3000 
 
 CMD ["npm", "start"]

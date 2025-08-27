@@ -5,7 +5,11 @@ const faqRoutes = require('./routes/faq');
 const frontend = require('./routes/frontend');
 const { apiRoutes } = require('./config/gcloud');
 
+const cors = require("cors");
+
 const app = express();
+
+app.use(cors());
 
 console.log("Im 5:", apiRoutes);
 app.use(apiRoutes.frontend, frontend);

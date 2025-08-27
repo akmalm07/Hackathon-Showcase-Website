@@ -20,6 +20,8 @@ module.exports.firestore = admin.firestore();
 
 module.exports.firestoreTimestamp = admin.firestore.Timestamp;
 
+module.exports.firestoreAddValue = admin.firestore.FieldValue;
+
 module.exports.bucket = admin.storage().bucket();
 
 module.exports.uploadPath = 'uploads/';
