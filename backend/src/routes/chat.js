@@ -1,15 +1,14 @@
 const { backendUrl, fs, path } = require('../config/files');
 const express = require('express');
-const { apiRoutes, collections, firestoreTimestamp } = require('../config/gcloud');
+const { collections, firestoreTimestamp } = require('../config/gcloud');
 const { getClosestWordIndex } = require('../config/spellingFixer');
 const { openai, timeToDeleteConversationSeconds, maxChatSize } =  require('../config/gpt');
 
 const router = express.Router()
 
-
 async function checkIfNotExceedLimits(res, chatId, message, chatHistory) {
-    
-    if (chatHistory.size() <= maxChatSize) {
+
+    if (chatHistory.length <= maxChatSize) {
         chatHistory.push({ user: message, assistant: null });
     } else {
         const result = await fetch(`${backendUrl}/chat`, {
@@ -46,7 +45,10 @@ async function sendMessageToChatGPT(res, chatId, message, contextList, chatHisto
         model: 'gpt-4',
         messages: [
             { role: 'system', content: contextStr },
-            ...chatHistory.map(entry => ({ role: 'user', content: entry.user }, {role: 'assistant', content: entry.assistant})),
+            ...chatHistory.flatMap(entry => [ 
+                { role: 'user', content: entry.user }, 
+                { role: 'assistant', content: entry.assistant }
+            ]),
             { role: 'user', content: message }
         ]
     });
@@ -103,13 +105,13 @@ async function getAppropriateContext(res, message) {
     return contextList;
 }
 
-router.use(apiRoutes.chat, express.json());
+router.use('/chat', express.json());
 
 
-router.post(apiRoutes.chat, async (req, res) => {
+router.post('/chat', async (req, res) => { // DEBUGGING
 
     const message = req.body.message;
-    const chatId = req.body.chatId;
+    let chatId = req.body.chatId;
 
     if (!chatId) {
         let docRef;
@@ -124,13 +126,14 @@ router.post(apiRoutes.chat, async (req, res) => {
             return res.status(500).json({ error: 'Internal Server Error' });
         }
 
-        const contextList = await getAppropriateContext(message);
+        const contextList = await getAppropriateContext(res, message);
 
         chatId = docRef.id;
 
         const response = await sendMessageToChatGPT(res, chatId, message, contextList, []);
 
         res.status(200).json({ reply: response, chatId: chatId });
+        return;
     }
 
     let docRef;
@@ -154,7 +157,7 @@ router.post(apiRoutes.chat, async (req, res) => {
 });
 
 
-router.delete(apiRoutes.chat, async (req, res) => {
+router.delete('/', async (req, res) => {
     const chatId = req.body.chatId;
 
     if (!chatId) {

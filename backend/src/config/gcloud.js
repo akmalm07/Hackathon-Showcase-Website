@@ -27,6 +27,7 @@ module.exports.uploadPath = 'uploads/';
 module.exports.apiRoutes = {
   faq: '/api/faq',
   chat: '/api/chat',
+  frontend: '/'
 };
 
 module.exports.collections = {
