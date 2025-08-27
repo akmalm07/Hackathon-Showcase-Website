@@ -5,7 +5,7 @@ function getClosestWord(dictionary, word, maxDistance = 3) {
     let minDistance = Infinity;
 
     for (const curr of dictionary) {
-        const distance = natural.LevenshteinDistance(curr, word);
+        const distance = natural.LevenshteinDistance(String(curr || ""), String(word || ""));
         if (distance < minDistance) {
             minDistance = distance;
             closest = curr;
@@ -20,11 +20,15 @@ function getClosestWord(dictionary, word, maxDistance = 3) {
 }
 
 function getClosestWordIndex(dictionary, word, maxDistance = 3) {
+
+    if (!dictionary || dictionary.length === 0) 
+        return null;
+
     let closestIndex = -1;
     let minDistance = Infinity;
 
     dictionary.forEach((curr, i) => {
-        const distance = natural.LevenshteinDistance(curr, word);
+        const distance = natural.LevenshteinDistance(String(curr || ""), String(word || ""));
         if (distance < minDistance) {
             minDistance = distance;
             closestIndex = i;
@@ -39,10 +43,9 @@ function getClosestWordIndex(dictionary, word, maxDistance = 3) {
     return closestIndex;
 }
 
-// Tests:
-//     const dictionary = ["hello", "world", "javascript"];
-//     console.log(getClosestWordIndex(dictionary, "hellloo")); // 0
-//     console.log(getClosestWordIndex(dictionary, "worlld"));  // 1
-//     console.log(getClosestWordIndex(dictionary, "xyz"));     // null
+//Tests:
+    const dictionary = ["Hello"];
+    console.log(getClosestWordIndex(dictionary, "Hello")); // 0
+
 
 module.exports = { getClosestWord, getClosestWordIndex };

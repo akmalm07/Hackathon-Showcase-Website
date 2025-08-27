@@ -42,8 +42,6 @@ async function sendMessageToChatGPT(res, chatId, message = "", contextList = [],
         // Build system context
         const contextStr = (contextList.length > 0 ? contextList.join("\n") : null);
 
-        console.log('\n\nContext List:', contextList, '\n\n');
-        console.log('\n\nChat history length:', chatHistory.length, '\n\n');
 
         // Validate inputs before hitting the API
         try {
@@ -111,19 +109,29 @@ async function getAppropriateContext(res, message) {
 
     const promptEngineeringData = {
         keys: [ ],
+        contextBindings: [ ],
         contexts: [ ]
     }
 
     dbRef.docs.forEach((doc, i) => {
-        const keyWords = doc.keyWords || [];
-        const context = doc.context || '';
+        const data = doc.data();
+        const keyWords = data.keyWords || [];
+        const context = data.context || '';
+
         keyWords.forEach(word => {
-            promptEngineeringData.keys.push({ key: word.toLowerCase(), contextBinding: i });
+            promptEngineeringData.keys.push(word.toLowerCase());
+            promptEngineeringData.contextBindings.push(i);
+
         });
+
         promptEngineeringData.contexts.push(context);
     });
 
+    console.log('Prompt Engineering Data:', promptEngineeringData);
+
     const contextList = [];
+
+
 
     try {
         contextList.push(fs.readFileSync(path.join(__dirname, '../../docs/promptStarter.txt'), 'utf8'));
@@ -134,11 +142,17 @@ async function getAppropriateContext(res, message) {
 
     for (const word of messageWords) {
 
+        console.log('Checking word:', word);
+
         const index = getClosestWordIndex(promptEngineeringData.keys, word);
         if (index !== null) {
-            contextList.push(promptEngineeringData.contexts[promptEngineeringData.keys[index].contextBinding]);
+            console.log('Found matching context for word:', word);
+            console.log('index:', index);
+            contextList.push(promptEngineeringData.contexts[promptEngineeringData.contextBindings[index]]);
         }
     }
+
+    console.log('Context List:', contextList);
 
     return contextList;
 }
@@ -155,9 +169,6 @@ router.post('/', async (req, res) => {
     }
 
     let chatId = req.body.chatId;
-
-    console.log('\n\nReceived message:', message, '\n\n');
-    console.log('\n\nReceived ID:', chatId, '\n\n');
 
     let response = "";
     let doc;
