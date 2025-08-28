@@ -1,8 +1,10 @@
 const express = require('express');
-const auth = require('../auth/auth');
+const { auth, hashPassword } = require('../auth/auth');
 const { path, fs } = require('../config/files');
 
 const router = express.Router();
+
+router.use('/', express.json());
 
 async function getFAQData() {
     try {
@@ -23,8 +25,9 @@ async function saveFAQData(faqData) {
 // TODO: Unit Test
 async function saveFAQData(faqData) {
     const faqPath = path.join(__dirname, '../../docs/faq.json');
-    await fs.writeFile(faqPath, JSON.stringify(faqData, null, 2));
+    await fs.promises.writeFile(faqPath, JSON.stringify(faqData, null, 2));
 }
+
 
 // TODO: Unit Test
 router.post('/', async (req, res) => {
@@ -46,8 +49,11 @@ router.post('/', async (req, res) => {
 
     const [username, password] = Buffer.from(token, 'base64').toString('utf8').split(':');
 
-    // Use base64 for encoding
-    if (username !== auth.username || password !== auth.password) {
+    // Hash the input password
+    const hashedInput = hashPassword(password);
+
+    // Compare username and hash
+    if (username !== auth.username || hashedInput !== auth.password) {
         return res.status(403).json({ error: 'Forbidden' });
     }
 
@@ -69,6 +75,10 @@ router.delete('/', async (req, res) => {
     // Authenticate the user
     if (!authHeader) 
         return res.status(401).json({ error: 'Unauthorized' });
+
+    if (!req.body.question) {
+        return res.status(400).json({ error: 'Question is required' });
+    }
     
     const [scheme, token] = authHeader.split(' ');
     
@@ -77,8 +87,11 @@ router.delete('/', async (req, res) => {
 
     const [username, password] = Buffer.from(token, 'base64').toString('utf8').split(':');
 
-    // Use base64 for encoding
-    if (username !== auth.username || password !== auth.password) {
+    // Hash the input password
+    const hashedInput = hashPassword(password);
+
+    // Compare username and hash
+    if (username !== auth.username || hashedInput !== auth.password) {
         return res.status(403).json({ error: 'Forbidden' });
     }
 

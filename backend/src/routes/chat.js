@@ -6,7 +6,7 @@ const { openai, timeToDeleteConversationSeconds, maxChatSize } =  require('../co
 
 const router = express.Router()
 
-async function checkIfNotExceedLimits(res, chatId, chatHistory = []) {
+async function checkIfNotExceedLimits(chatId, chatHistory = []) {
     
     if (chatHistory.length <= maxChatSize) {
         return true;
@@ -45,7 +45,7 @@ async function sendMessageToChatGPT(res, chatId, message = "", contextList = [],
 
         // Validate inputs before hitting the API
         try {
-            const validation = await checkIfNotExceedLimits(res, chatId, chatHistory);
+            const validation = await checkIfNotExceedLimits(chatId, chatHistory);
 
             if (!validation) {
                 return res.status(400).json({ error: 'Chat history exceeded maximum size and has been reset. Please refresh your screen.' });
@@ -78,7 +78,6 @@ async function sendMessageToChatGPT(res, chatId, message = "", contextList = [],
         messages.push({ role: "user", content: message  });
 
         // Call OpenAI
-        console.log('\n\nSending message to OpenAI:', messages, '\n\n');
         response = await openai.chat.completions.create({
             model: "gpt-4",
             messages
@@ -127,11 +126,7 @@ async function getAppropriateContext(res, message) {
         promptEngineeringData.contexts.push(context);
     });
 
-    console.log('Prompt Engineering Data:', promptEngineeringData);
-
     const contextList = [];
-
-
 
     try {
         contextList.push(fs.readFileSync(path.join(__dirname, '../../docs/promptStarter.txt'), 'utf8'));
@@ -142,17 +137,11 @@ async function getAppropriateContext(res, message) {
 
     for (const word of messageWords) {
 
-        console.log('Checking word:', word);
-
         const index = getClosestWordIndex(promptEngineeringData.keys, word);
         if (index !== null) {
-            console.log('Found matching context for word:', word);
-            console.log('index:', index);
             contextList.push(promptEngineeringData.contexts[promptEngineeringData.contextBindings[index]]);
         }
     }
-
-    console.log('Context List:', contextList);
 
     return contextList;
 }
@@ -178,7 +167,7 @@ router.post('/', async (req, res) => {
             doc = collections.chatHistory.doc();
             await doc.set({
                 createdAt: firestoreTimestamp.fromDate( new Date()),
-                expiresAt: firestoreTimestamp.fromDate(new Date(Date.now() + timeToDeleteConversationSeconds * 1000)),
+                expireAt: firestoreTimestamp.fromDate(new Date(Date.now() + timeToDeleteConversationSeconds * 1000)),
                 messages: []
             });
         } catch (error) {

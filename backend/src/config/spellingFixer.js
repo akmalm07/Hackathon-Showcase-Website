@@ -44,8 +44,8 @@ function getClosestWordIndex(dictionary, word, maxDistance = 3) {
 }
 
 //Tests:
-    const dictionary = ["Hello"];
-    console.log(getClosestWordIndex(dictionary, "Hello")); // 0
+    // const dictionary = ["Hello"];
+    // console.log(getClosestWordIndex(dictionary, "Hello")); // 0
 
 
 module.exports = { getClosestWord, getClosestWordIndex };

@@ -1,8 +1,13 @@
 const files = require('../config/files');
+const crypto = require('crypto')
 
-const authConfig = {
-    username: process.env.AUTH_USERNAME,
-    password: process.env.AUTH_PASSWORD
+const hashPassword = (password) => {
+    return crypto.createHash('sha256').update(password).digest('hex');
 };
 
-module.exports = authConfig;
+const auth = {
+    username: process.env.AUTH_USERNAME,
+    password: hashPassword(process.env.AUTH_PASSWORD)
+};
+
+module.exports = { auth, hashPassword };
