@@ -3,8 +3,9 @@ import FAQ from './FAQ';
 import Home from './Home';
 import { NavBar, ChatButton } from './NavBar';
 import About from './About';
-import ChatPage from './Chat';
+import Chat from './Chat';
 import Footer from './Footer';
+import Legal from './Legal';
 
 
 
@@ -36,14 +37,14 @@ export default function App() {
         {
           <>
             <NavBar />
-            <ChatPage />
+            <Chat />
           </>
         } />
         <Route path="/legal" element=
         {
           <>
             <NavBar />
-            {/* Legal Section to add */}
+            <Legal />
           </>
         } />
 

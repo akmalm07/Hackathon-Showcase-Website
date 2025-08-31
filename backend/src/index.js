@@ -15,9 +15,8 @@ app.use(apiRoutes.frontend, frontend);
 
 app.use(apiRoutes.faq, faqRoutes);
 
-
 app.use(apiRoutes.chat, chatRoutes);
 
-app.listen(files.port || 3000, () => {
-    console.log(`Server is running on port ${files.port || 3000}`);
+app.listen(files.port || 8080, () => {
+    console.log(`Server is running on port ${files.port || 8080}`);
 });

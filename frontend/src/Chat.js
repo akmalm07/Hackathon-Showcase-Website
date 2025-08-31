@@ -4,20 +4,31 @@ import "./style/chat.css";
 import refreshIcon from './vendors/refresh-icon.png';
 
 
-async function refreshChat(setMessages = () => {}, setCanSend = () => {}) {
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
+async function refreshChat(messages, setMessages = () => {}, setCanSend = () => {}) {
+
+  if (messages.length === 0) {
+    return;
+  }
   setMessages([{ role: "bot", content: "Hi! How can I help you today?" }]);
-  
+
+
   try {
     await fetch(`${API_URL}/api/chat`, {
       method: "DELETE",
       headers: {
-        chatId: localStorage.getItem('chat_id'),
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        chatId: localStorage.getItem('chat_id'),
+      })
     });
   } catch (error) {
     console.error("Error:", error);
-    sendErrorMessage('The bot encountered an error. Please try again later.');
+    sendErrorMessage('The bot encountered an error. Please refresh.');
     setCanSend(true);
     return;
   }
@@ -70,8 +81,11 @@ export default function ChatPage() {
     setCanSend(false);
     
     if (messages.length >= MAX_MESSAGES * 2) { // To accommodate bot responses
-      sendErrorMessage('Message limit reached. Refreshing chat...');
-      refreshChat(setMessages, setCanSend);
+      setMessages((prev) => [...prev, { role: "assistant", content: 'Message limit reached. Refreshing chat...' }]);
+      setCanSend(false);
+      setTimeout(async () => {
+        await refreshChat(messages, setMessages, setCanSend);
+      }, 2000);
       return;
     }
 
@@ -81,20 +95,22 @@ export default function ChatPage() {
 
     setMessages((prev) => [...prev, { role: "user", content: trimmedInput }]);
     setInput("");
-
     let result;
     try {
       result = await fetch(`${API_URL}/api/chat`, {
       method: "POST",
       headers: {
-        chatId: localStorage.getItem('chat_id'),
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ message: trimmedInput }),
-      });
+      body: JSON.stringify({
+        message: trimmedInput,
+        chatId: localStorage.getItem('chat_id'),
+      })
+    });
     } catch (error) {
       console.error("Error:", error);
-      sendErrorMessage('The bot encountered an error. Please try again later.');
+      sendErrorMessage('The bot encountered an error. Please refresh.');
+      refreshChat(messages, setMessages, setCanSend);
       setCanSend(true);
       return;
     }
@@ -102,23 +118,24 @@ export default function ChatPage() {
     const data = await result.json();
     
     if (!result.ok) {
-      console.error("Error:", data?.error || 'The bot encountered an error. Please try again later.');
-      setMessages((prev) => [...prev, { role: "bot", content: data?.error || 'The bot encountered an error. Please try again later.' }]);
+      console.error("Error:", 'The bot encountered an error. Please refresh.');
+      setMessages((prev) => [...prev, { role: "bot", content: 'The bot encountered an error. Please refresh.' }]);
       setCanSend(true);
       return;
     }
 
-    if (!data || !data.body.reply) {
-      setMessages((prev) => [...prev, { role: "bot", content: 'The bot encountered an error. Please try again later.' }]);
+    if (!data || !data.reply) {
+      setMessages((prev) => [...prev, { role: "bot", content: 'The bot encountered an error. Please refresh.' }]);
       setCanSend(true);
       return;
     }
 
-    localStorage.setItem('chat_id', data.body.chatId);
+    localStorage.setItem('chat_id', data.chatId);
     const botMsg = {
       role: "bot",
-      content: data.body.reply,
+      content: data.reply,
     };
+
     setMessages((prev) => [...prev, botMsg]);
 
     setCanSend(true);
@@ -148,6 +165,7 @@ export default function ChatPage() {
       </div>
 
       <p className="chat-subtext">{subtext}</p>
+      <p className="chat-subtext">{clamp(Math.floor(MAX_MESSAGES - (messages.length - 1) / 2), 0, MAX_MESSAGES)} messages left</p>
       <form
         className="chat-input"
         onSubmit={(e) => {
@@ -162,7 +180,7 @@ export default function ChatPage() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           />
-        <button type="button" onClick={() => refreshChat(setMessages, setCanSend)} className="refresh-button"><img src={refreshIcon} alt="Refresh" /></button>
+        <button type="button" onClick={() => refreshChat(messages, setMessages, setCanSend)} className="refresh-button"><img src={refreshIcon} alt="Refresh" /></button>
         <button type="submit" disabled={!canSend} className={`send-button ${canSend ? '' : 'busy'}`}>Send</button>
       </form>
     </section>

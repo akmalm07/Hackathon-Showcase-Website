@@ -2,32 +2,9 @@ import { API_URL } from './config.js'
 import './style/faq.css';
 import { useState, useRef, useEffect } from "react";
 
-export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState(null);
-  const faqRefs = useRef([]); // refs to each answer wrapper
-  const [faqData, setFaqData] = useState([]);
 
-  useEffect(() => {
-  let isMounted = true;
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`${API_URL}/api/faqs`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-      });
-      
-      if (!response.ok) throw new Error("Failed to fetch");
-
-      const responseJson = await response.json();
-      if (isMounted && Array.isArray(responseJson.data)) {
-        setFaqData(responseJson.data);
-      } else {
-        throw new Error("Invalid FAQ data");
-      }
-    } catch (error) {
-      console.error("Error fetching FAQ data:", error);
-      setFaqData([
+function initialFAQData() {
+  return [
         { 
           question: "What is a hackathon?", 
           answer: "A hackathon is an event where participants collaborate intensively to build projects, usually within 24–48 hours." 
@@ -41,7 +18,7 @@ export default function FAQ() {
           answer: "No! Beginners are welcome. Many participants learn as they go, and there are mentors to help." 
         },
         { 
-          question: "How much does it cost?", 
+          question: "How much does it cost?",           
           answer: "Most hackathons are free for participants, and we provide food, swag, and resources." 
         },
         { 
@@ -68,13 +45,41 @@ export default function FAQ() {
           question: "How do I register?", 
           answer: "You can register on our official website. Spots are limited, so sign up early!" 
         }
-  ]);
+  ];
+}
+
+export default function FAQ() {
+  const [openIndex, setOpenIndex] = useState(null);
+  const faqRefs = useRef([]); // refs to each answer wrapper  
+  const [faqData, setFaqData] = useState(initialFAQData());
+
+  useEffect(() => {
+
+    const fetchData = async () => { // Wrapper to allow async functionality
+    try {
+      const response = await fetch(`${API_URL}/api/faq`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+      });
+      
+      if (!response.ok) throw new Error("Failed to fetch");
+
+      const responseJson = await response.json();
+
+      if (!Array.isArray(responseJson)) {
+        throw new Error("Invalid FAQ data. Data must be an array.");
+      }
+
+      setFaqData(prevData => [...responseJson, ...prevData]);
+
+    } catch (error) {
+      console.error("Error fetching FAQ data:", error);
     }
   };
-
+  
   fetchData();
 
-  return () => { isMounted = false };
+  return () => {};
 }, []);
 
   const toggleFAQ = (index) => {

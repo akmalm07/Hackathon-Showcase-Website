@@ -93,7 +93,7 @@
 
   .faq-question,
   .faq-answer {
-    font-size: clamp(0.9rem, 3vw, 1.1rem);
+    font-size:1.2rem;
   }
 
   .faq-item {

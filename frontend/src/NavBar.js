@@ -124,14 +124,13 @@ export function ChatButton() {
 
     return () => clearTimeout(timer);
   }, []);
-
   return (
     <Link to="/ai" className="chat-button">
       {appear && (
-        <div class="chat-wrapper">
-        <div class="chat-bubble">Hey, chat with me!</div>
-    </div>
-    )}
+        <div className="chat-wrapper">
+          <div className="chat-bubble">Hey, chat with me!</div>
+        </div>
+      )}
       <img src={chatImg} alt="Chat" className="chat-icon" />
     </Link>
   );

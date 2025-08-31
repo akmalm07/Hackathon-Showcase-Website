@@ -1,4 +1,4 @@
-const { backendUrl, fs, path } = require('../config/files');
+const { fs, path } = require('../config/files');
 const express = require('express');
 const { collections, firestoreTimestamp, firestoreAddValue } = require('../config/gcloud');
 const { getClosestWordIndex } = require('../config/spellingFixer');
@@ -6,32 +6,17 @@ const { openai, timeToDeleteConversationSeconds, maxChatSize } =  require('../co
 
 const router = express.Router()
 
-async function checkIfNotExceedLimits(chatId, chatHistory = []) {
-    
+async function checkIfNotExceedLimits(chatId, chatHistory = []) { 
     if (chatHistory.length <= maxChatSize) {
         return true;
     }
-
-    const result = await fetch(`${backendUrl}/chat`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chatId: chatId }),
-    });
-
-    const data = await result.json();
-
-    if (data.error === 'Chat history not found' && data.status === 404) {
-        console.error('Error deleting chat history:', data.error || 'Unknown error');
-        throw new Error('Chat history not found');
+    
+    try {
+        const result = await deleteChatHistory(chatId);
+    } catch (error) {
+        console.error('Error deleting chat history:', error);
+        return false;
     }
-
-    if (!result.ok) {
-        console.error('Error deleting chat history:', data.error || 'Unknown error');
-        throw new Error('Failed to delete chat history');
-    }
-
-    return false;
-
 }
 
 async function sendMessageToChatGPT(res, chatId, message = "", contextList = [], chatHistory = []) {
@@ -215,20 +200,27 @@ router.post('/', async (req, res) => {
 });
 
 
-router.delete('/', async (req, res) => {
-    const chatId = req.body.chatId;
-
+async function deleteChatHistory(chatId) {
     if (!chatId) {
-        return res.status(404).json({ error: 'Chat ID is required' });
+        throw new Error('Chat ID is required');
     }
 
     try {
         await collections.chatHistory.doc(chatId).delete();
-        res.status(200).json({ message: 'Chat history deleted successfully' });
     } catch (error) {
         console.error('Error deleting chat history:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        throw new Error('Failed to delete chat history');
+    }
+}
+
+router.delete('/', async (req, res) => {
+    try {
+        await deleteChatHistory(req.body.chatId);
+        res.status(200).json({ message: 'Chat history deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
+
 
 module.exports = router
