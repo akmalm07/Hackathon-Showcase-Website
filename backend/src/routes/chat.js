@@ -2,7 +2,7 @@ const { fs, path } = require('../config/files');
 const express = require('express');
 const { collections, firestoreTimestamp, firestoreAddValue } = require('../config/gcloud');
 const { getClosestWordIndex } = require('../config/spellingFixer');
-const { openai, timeToDeleteConversationSeconds, maxChatSize } =  require('../config/gpt');
+const { getOpenAIClient, openaiModel, timeToDeleteConversationSeconds, maxChatSize } =  require('../config/gpt');
 
 const router = express.Router()
 
@@ -63,8 +63,9 @@ async function sendMessageToChatGPT(res, chatId, message = "", contextList = [],
         messages.push({ role: "user", content: message  });
 
         // Call OpenAI
+        const openai = await getOpenAIClient();
         response = await openai.chat.completions.create({
-            model: "gpt-4",
+            model: openaiModel,
             messages
         });
 

@@ -1,4 +1,4 @@
-const { files, dotenv } = require('../config/files');
+require('../config/files');
 const crypto = require('crypto')
 const { SecretManagerServiceClient } = require('@google-cloud/secret-manager');
 
@@ -21,10 +21,13 @@ const getSecret = async (secretName, key) => {
     return key ? parsed[key] : parsed;
 };
 
-const auth = {
-    username: await getSecret('MBHS_DB_SECRETS', 'AUTH_USERNAME'),
-    password: hashPassword(await getSecret('MBHS_DB_SECRETS', 'AUTH_PASSWORD'))
+const auth = async () => {
+    const username = await getSecret('MBHS_DB_SECRETS', 'AUTH_USERNAME');
+    const password = await getSecret('MBHS_DB_SECRETS', 'AUTH_PASSWORD');
+    return {
+        username,
+        password: hashPassword(password),
+    };
 };
-
 
 module.exports = { auth, hashPassword, getSecret };
