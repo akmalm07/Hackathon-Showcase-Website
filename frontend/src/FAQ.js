@@ -1,4 +1,4 @@
-import { API_URL } from './config.js'
+import { API_URL } from './config'
 import './style/faq.css';
 import { useState, useRef, useEffect } from "react";
 

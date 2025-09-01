@@ -1,19 +1,20 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 import './style/home.css';
+import { FORM_URL } from './config';
 // import videoFile from './vendors/coding-vid.mp4'; -- Video reserved for the Join Section --
 
 
 
 //Global variables for the typing effect
-const wordList = ["Code", "Build", "Create"];
+const wordList = ['Code', 'Build', 'Create'];
 const typingDelay = 100;
 const erasingDelay = 60;
 const newWordDelay = 1500;
 
 
-function HomeFront() {
-
-// --Typing effect logic
+export default function Home() {
+  
+  // --Typing effect logic
   const typedTextRef = useRef(null);
   const typingTimeout = useRef(null);
   const erasingTimeout = useRef(null);
@@ -59,25 +60,17 @@ function HomeFront() {
 
 
   return (
-    <section className="home-front">
-      <div className="home-front-content">
+    <section className='home-front'>
+      <div className='home-front-content'>
         <h1>Welcome to the <br></br> MBHS Hackathon!</h1>
         <p>
-          Are you ready to <span ref={typedTextRef} className="typed-text"></span>
-          <span className="blinking-underscore">_</span>?
+          Are you ready to <span ref={typedTextRef} className='typed-text'></span>
+          <span className='blinking-underscore'>_</span>?
         </p>
-        <a href="TODO: Make a form"><span className="join-button">Join Now!</span></a>
+        <a href={FORM_URL} target="_blank" rel="noopener noreferrer"><span className='join-button'>Join Now!</span></a>
       </div>
     </section>
   );
 }
 
-export default function Home() 
-{
-  return (
-  <>
-  <HomeFront/>
-  </>
-  );
-}
 

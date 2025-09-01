@@ -1,6 +1,7 @@
 const express = require('express');
-const { auth, hashPassword } = require('../auth/auth');
+const { getAuth, hashPassword } = require('../auth/auth');
 const { path, fs } = require('../config/files');
+const HttpError = require('../config/error');
 
 const router = express.Router();
 
@@ -29,23 +30,25 @@ async function saveFAQData(faqData) {
 }
 
 
-// TODO: Unit Test
-router.post('/', async (req, res) => {
-
-    const authHeader = req.headers['authorization'];
-
-    // Authenticate the user
-    if (!authHeader) 
-        return res.status(401).json({ error: 'Unauthorized' });
+async function Authenticate(authHeader, { question, answer } = {}) {
     
-    if (!req.body.question || !req.body.answer) {
-        return res.status(400).json({ error: 'Question and answer are required' });
+    if (!authHeader) {
+        throw new HttpError('Unauthorized', 401);
+    }
+
+    if (question !== undefined && !question) {
+        throw new HttpError('Question is required', 400);
+    }
+
+    if (answer !== undefined && !answer) {
+        throw new HttpError('Answer is required', 400);
     }
 
     const [scheme, token] = authHeader.split(' ');
-    
-    if (!scheme || !token || scheme !== 'Basic') 
-        return res.status(401).json({ error: 'Unauthorized' });
+
+    if (!scheme || !token || scheme !== 'Basic') {
+        throw new HttpError('Unauthorized', 401);
+    }
 
     const [username, password] = Buffer.from(token, 'base64').toString('utf8').split(':');
 
@@ -53,12 +56,31 @@ router.post('/', async (req, res) => {
     const hashedInput = hashPassword(password);
 
     // Compare username and hash
-    if (username !== auth.username || hashedInput !== auth.password) {
-        return res.status(403).json({ error: 'Forbidden' });
+    const authData = await getAuth();
+    if (username !== authData.username || hashedInput !== authData.password) {
+        throw new HttpError('Forbidden', 403);
+    }
+}
+
+// TODO: Unit Test
+router.post('/', async (req, res) => {
+
+    const authHeader = req.headers['authorization'];
+
+    try {
+        await Authenticate(authHeader, { question: req.body.question, answer: req.body.answer });
+    } catch (error) {
+        return res.status(error.statusCode || 401).json({ error: error.message });
     }
 
     // Update the faq JSON file
     const faqData = await getFAQData();
+
+    // Finding duplicates
+    if (faqData.some(element => element.question === req.body.question)) {
+        return res.status(409).json({ error: 'FAQ with this question already exists' });
+    }
+
     faqData.push(req.body);
     await saveFAQData(faqData);
 
@@ -73,26 +95,10 @@ router.delete('/', async (req, res) => {
     const authHeader = req.headers['authorization'];
 
     // Authenticate the user
-    if (!authHeader) 
-        return res.status(401).json({ error: 'Unauthorized' });
-
-    if (!req.body.question) {
-        return res.status(400).json({ error: 'Question is required' });
-    }
-    
-    const [scheme, token] = authHeader.split(' ');
-    
-    if (!scheme || !token || scheme !== 'Basic') 
-        return res.status(401).json({ error: 'Unauthorized' });
-
-    const [username, password] = Buffer.from(token, 'base64').toString('utf8').split(':');
-
-    // Hash the input password
-    const hashedInput = hashPassword(password);
-
-    // Compare username and hash
-    if (username !== auth.username || hashedInput !== auth.password) {
-        return res.status(403).json({ error: 'Forbidden' });
+    try {
+        await Authenticate(authHeader, { question: req.body.question });
+    } catch (error) {
+        return res.status(error.statusCode || 401).json({ error: error.message });
     }
 
     // Update the faq JSON file

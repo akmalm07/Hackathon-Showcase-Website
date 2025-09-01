@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from './logo.svg';
 import chatImg from './vendors/chat-icon.png';
 import './style/navbar.css';
+import { FORM_URL } from "./config";
 
 
 
@@ -40,7 +41,7 @@ function NavbarList({ setModal = () => {} }) {
   <>
     <ul>
       <li><AboutLink setModal={setModal} /></li>
-      <li><a onClick={() => setModal(false)} target="_blank" rel="noopener noreferrer" href="TODO: Make google form">Join</a></li>
+      <li><a onClick={() => setModal(false)} target="_blank" rel="noopener noreferrer" href={FORM_URL}>Join</a></li>
       <li><Link to="/faq" onClick={() => setModal(false)}>FAQ</Link></li>
       <li><Link to="/ai" onClick={() => setModal(false)}>Chat with Bot</Link></li>
     </ul>

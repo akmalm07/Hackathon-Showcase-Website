@@ -21,13 +21,18 @@ const getSecret = async (secretName, key) => {
     return key ? parsed[key] : parsed;
 };
 
-const auth = async () => {
-    const username = await getSecret('MBHS_DB_SECRETS', 'AUTH_USERNAME');
-    const password = await getSecret('MBHS_DB_SECRETS', 'AUTH_PASSWORD');
+let username, password;
+
+const getAuth = async () => {
+    if (!username || !password) {
+        username = await getSecret('MBHS_DB_SECRETS', 'AUTH_USERNAME');
+        password = await getSecret('MBHS_DB_SECRETS', 'AUTH_PASSWORD');
+        password = hashPassword(password);
+    }
     return {
         username,
-        password: hashPassword(password),
+        password,
     };
-};
+ }
 
-module.exports = { auth, hashPassword, getSecret };
+module.exports = { getAuth, hashPassword, getSecret };

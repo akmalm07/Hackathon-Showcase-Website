@@ -11,5 +11,3 @@ Found in Pexels
 
 
 Icons:
-    - Refresh Icon:
-	Icon by [https://www.flaticon.com/authors/dave-gandy](Dave Gandy)
