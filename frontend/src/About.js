@@ -28,21 +28,21 @@ function AboutSection()
 
             <div className="separator-container">
                 <Separator 
-                    title="About Us" 
-                    text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
+                    title="Who We Are" 
+                    text="We’re the Millennium Brooklyn High School CS Club, a group of students
+                          passionate about coding, problem-solving, and building creative projects together."
                     Icon={Info} 
                 />
                 <Separator 
                     title="Our Mission" 
-                    text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                    text="We aim to inspire curiosity, teamwork, and innovation by hosting events 
+                          like hackathons that bring students together to learn and create."
                     Icon={Star} 
                 />
                 <Separator 
-                    title="Join Us" 
-                    text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
+                    title="Why It Matters" 
+                    text="Hackathons give students a chance to turn ideas into reality, gain real 
+                          experience, and build skills that go beyond the classroom. Plus, they’re a lot of fun!" 
                         Icon={Heart} 
                 />
             </div>
