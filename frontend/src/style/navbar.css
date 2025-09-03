@@ -1,6 +1,20 @@
 @import url("./root.css");
 
 
+.logo {
+  width: auto; 
+  height: 50px; 
+  padding: 0px;
+  margin-left: 10px;
+}
+
+
+@media (max-width: 768px) {
+  .logo {
+    width: 100px; 
+  }
+}
+
 .nav-bar
 {
   position: fixed;  
@@ -24,11 +38,6 @@
   background-color: var(--nav-background-color-scrolled);
 }
 
-.nav-bar .logo
-{
-  height: 40px;
-  padding: 0.6rem;
-}
 
 .nav-bar ul
 {

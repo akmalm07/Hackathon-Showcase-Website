@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import logo from './logo.svg';
+import logo from './vendors/mbhs_cs_l.png';
 import chatImg from './vendors/chat-icon.png';
 import './style/navbar.css';
 import { FORM_URL } from "./config";
