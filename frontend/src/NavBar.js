@@ -42,6 +42,7 @@ function NavbarList({ setModal = () => {} }) {
     <ul>
       <li><AboutLink setModal={setModal} /></li>
       <li><a onClick={() => setModal(false)} target="_blank" rel="noopener noreferrer" href={FORM_URL}>Join</a></li>
+      <li><Link to="/upload" onClick={() => setModal(false)}>Upload Project</Link></li>
       <li><Link to="/faq" onClick={() => setModal(false)}>FAQ</Link></li>
       <li><Link to="/ai" onClick={() => setModal(false)}>Chat with Bot</Link></li>
     </ul>

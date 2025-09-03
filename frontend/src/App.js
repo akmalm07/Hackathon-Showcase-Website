@@ -6,6 +6,7 @@ import About from './About';
 import Chat from './Chat';
 import Footer from './Footer';
 import Legal from './Legal';
+import Upload from './Upload';
 
 
 
@@ -20,7 +21,7 @@ export default function App() {
             <ChatButton />
             <Home />  
             <About />
-          {/* -- Add the Join Page Here --- */}
+            <Upload />
            <Footer />
 
           </>
@@ -47,7 +48,13 @@ export default function App() {
             <Legal />
           </>
         } />
-
+        <Route path="/upload" element=
+        {
+          <>
+            <NavBar />
+            <Upload />
+          </>
+        } />
       </Routes>
     </Router>
   );
