@@ -6,6 +6,7 @@ import About from './About';
 import Chat from './Chat';
 import Footer from './Footer';
 import Legal from './Legal';
+import Join from './Join';
 // import Upload from './Upload';
 
 
@@ -21,6 +22,7 @@ export default function App() {
             <ChatButton />
             <Home />  
             <About />
+            <Join />
             {/* <Upload /> */}
            <Footer />
 
