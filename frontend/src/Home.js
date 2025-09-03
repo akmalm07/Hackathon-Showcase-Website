@@ -62,7 +62,7 @@ export default function Home() {
   return (
     <section className='home-front'>
       <div className='home-front-content'>
-        <h1>Welcome to the <br></br> MBHS Hackathon!</h1>
+        <h1>Welcome to the <br />MBHS Hackathon!</h1>
         <p>
           Are you ready to <span ref={typedTextRef} className='typed-text'></span>
           <span className='blinking-underscore'>_</span>?

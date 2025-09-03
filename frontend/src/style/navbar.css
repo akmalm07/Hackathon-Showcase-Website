@@ -3,10 +3,11 @@
 
 .logo {
   width: auto; 
-  height: 50px; 
+  height: calc(var(--navbar-height) + 5px); 
   padding: 0px;
-  margin-left: 10px;
+  margin-left: 20px;
 }
+
 
 
 @media (max-width: 768px) {
@@ -30,7 +31,6 @@
   z-index: 100;
   height: var(--navbar-height);
   transition: 0.3s background-color ease-in-out;
-  border-bottom: 1px solid var(--nav-background-color-scrolled);
 }
 
 .nav-bar.scrolled

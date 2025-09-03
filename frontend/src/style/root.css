@@ -11,7 +11,7 @@
 
   --footer-background-color: #3b3939;
   --footer-text-color: var(--text-color);
-  --nav-background-color-scrolled: #4c5362;
+  --nav-background-color-scrolled: rgba(181, 189, 183, 0.4);
   --nav-background-color-darker: #3a3b3f;
   --about-background-color: var(--nav-background-color);
 
@@ -92,6 +92,12 @@ h1
   color: var(--text-color);
   font-size: var(--font-size-large);
   font-weight: 600;
+}
+
+.transition-col {
+  background: linear-gradient(90deg, var(--secondary-color), var(--secondary-color-darker));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 p {

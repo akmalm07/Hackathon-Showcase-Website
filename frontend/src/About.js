@@ -1,7 +1,7 @@
 import "./style/about.css"
 import "./style/seporator.css"
 
-import { Info, Heart, Star } from "lucide-react"; // Delete later and repace with real icons
+import { School, Heart, Star } from "lucide-react"; // Delete later and repace with real icons
 
 function Separator({ title, text, Icon }) 
 {
@@ -31,7 +31,7 @@ function AboutSection()
                     title="Who We Are" 
                     text="We’re the Millennium Brooklyn High School CS Club, a group of students
                           passionate about coding, problem-solving, and building creative projects together."
-                    Icon={Info} 
+                    Icon={School} 
                 />
                 <Separator 
                     title="Our Mission" 
