@@ -69,6 +69,7 @@ export default function Home() {
         </p>
         <a href={FORM_URL} target="_blank" rel="noopener noreferrer"><span className='join-button'>Join Now!</span></a>
       </div>
+    
     </section>
   );
 }
