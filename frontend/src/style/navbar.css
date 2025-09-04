@@ -6,6 +6,7 @@
   height: calc(var(--navbar-height) + 5px); 
   padding: 0px;
   margin-left: 20px;
+  display: inline-block;
 }
 
 

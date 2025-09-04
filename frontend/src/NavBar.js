@@ -90,7 +90,7 @@ export function NavBar() {
   return (
     <header>
       <div className={`nav-bar ${scrolled ? "scrolled" : ""}`}>
-        <img className="logo" src={logo} alt="Logo" />
+        <Link to="/" style={{ display: "contents" }}><img className="logo" src={logo} alt="Logo" /></Link> {/* The inline css is to keep the Link from affecting the layout of the image */}
 
         <NavbarList />
 
