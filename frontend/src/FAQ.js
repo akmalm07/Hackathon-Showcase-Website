@@ -7,7 +7,7 @@ function initialFAQData() {
   return [
         { 
           question: "What is a hackathon?", 
-          answer: "A hackathon is an event where participants collaborate intensively to build projects, usually within 24–48 hours." 
+          answer: "A hackathon is an event where participants collaborate intensively to build projects. For our hackathon, it will wast for 1 month." 
         },
         { 
           question: "Who can participate?", 
@@ -19,19 +19,19 @@ function initialFAQData() {
         },
         { 
           question: "How much does it cost?",           
-          answer: "Most hackathons are free for participants, and we provide food, swag, and resources." 
+          answer: "It costs $0.00. It's free to join!" 
         },
         { 
           question: "Can I work in a team?", 
-          answer: "Yes! Teams are encouraged, usually with 2–4 members. If you don’t have a team, we’ll help you find one." 
+          answer: "Yes! Teams are encouraged, usually with 2–4 members. If you don’t have a team, we’ll help you find one. Working solo is also an option." 
         },
         { 
           question: "What should I bring?", 
-          answer: "Bring your laptop, charger, and anything you need to be comfortable. We’ll handle meals and snacks." 
+          answer: "Your creativity and enthusiasm!" 
         },
         { 
           question: "Are there prizes?", 
-          answer: "Yes! Prizes are awarded for the best projects in different categories, but the main reward is the experience." 
+          answer: "Yes! Prizes are awarded for the best projects in different tracks. There will be more details on the website soon." 
         },
         { 
           question: "Do I need to stay the whole time?", 
@@ -39,11 +39,11 @@ function initialFAQData() {
         },
         { 
           question: "Will there be mentors?", 
-          answer: "Yes! Industry professionals and experienced hackers will be available to guide participants." 
+          answer: "Yes! Experienced student hackers will be available to guide participants." 
         },
         { 
           question: "How do I register?", 
-          answer: "You can register on our official website. Spots are limited, so sign up early!" 
+          answer: "You can register on our official website. Clkick the 'Join' button to sign up." 
         }
   ];
 }

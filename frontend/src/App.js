@@ -7,6 +7,7 @@ import Chat from './Chat';
 import Footer from './Footer';
 import Legal from './Legal';
 import Join from './Join';
+import LaserMouse from './LazerMouse';
 // import Upload from './Upload';
 
 
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/" element=
         { 
           <>
+            <LaserMouse />
             <NavBar />
             <ChatButton />
             <Home />  
@@ -31,6 +33,7 @@ export default function App() {
         <Route path="/faq" element=
         {
           <>
+            <LaserMouse />
             <NavBar />
             <ChatButton />
             <FAQ />
@@ -39,6 +42,7 @@ export default function App() {
         <Route path="/ai" element=
         {
           <>
+            <LaserMouse />
             <NavBar />
             <Chat />
           </>
