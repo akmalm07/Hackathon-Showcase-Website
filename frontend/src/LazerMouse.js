@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { MS_BEFORE_LAZER_FADES } from "./config"
 
+
 export default function LaserMouse() 
 {
 const canvasRef = useRef(null);

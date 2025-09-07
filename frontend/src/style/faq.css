@@ -2,7 +2,7 @@
 
 .faq-section {
   background-color: var(--faq-background-color);
-  padding: 5vh 5vw;
+  padding: 5vh 5vw 15vh 5vw;
   font-family: "Inter", sans-serif;
   width: 100%;
   box-sizing: border-box;
